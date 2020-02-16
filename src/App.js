@@ -21,7 +21,7 @@ const customers = [
     'job':'고등학생'  
   },
   {
-    'id': 1,
+    'id': 3,
     'image': 'http://placeimg.com/64/64/3',
     'name': '삼삼삼',
     'birthday': '123456',
@@ -37,6 +37,7 @@ function App() {
         customers.map(c => {
           return (
             <Customer
+              key={c.id} 
               id={c.id}
               image={c.image}
               name={c.name}
@@ -45,8 +46,8 @@ function App() {
               job={c.job}
               />  
           );
-      })
-    }
+        })
+      }
     </div>
   );
 }
