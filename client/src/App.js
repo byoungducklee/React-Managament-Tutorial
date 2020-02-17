@@ -14,7 +14,8 @@ import {withStyles} from '@material-ui/core/styles';
 const styles = theme => ({
     root: {
         width: '100%',
-        marginTop: theme.spacing.unit * 3,
+        // marginTop: theme.spacing.unit * 3,
+         marginTop: theme.spacing(3),
         overflowX: "auto"
     },
     table: {
@@ -22,36 +23,30 @@ const styles = theme => ({
     }
 })
 
-const customers = [
-  {
-    'id': 1,
-    'image': 'http://placeimg.com/64/64/1',
-    'name': '일일일',
-    'birthday': '123456',
-    'gender': '남자',
-    'job':'중학생'  
-  },
-  {
-    'id': 2,
-    'image': 'http://placeimg.com/64/64/2',
-    'name': '이이이',
-    'birthday': '123456',
-    'gender': '남자',
-    'job':'고등학생'  
-  },
-  {
-    'id': 3,
-    'image': 'http://placeimg.com/64/64/3',
-    'name': '삼삼삼',
-    'birthday': '123456',
-    'gender': '여자',
-    'job':'대학생'  
-  }      
-]
-
-
-
 class App extends React.Component  {
+  constructor(props) {
+    super(props);
+    this.state = {
+      customers: ""
+    }
+  }
+
+  componentDidMount() {
+    this.callApi()
+      .then(res => this.setState({customers: res}))
+      .catch(err => console.log(err));
+  }
+
+
+  callApi = async () => {
+    const response = await fetch('api/customers');
+    const body = await response.json();
+    if (response.status !== 200) throw Error(body.message);
+
+
+    return body;
+    }
+
   render() {
   const { classes } = this.props;
   return (
@@ -69,8 +64,8 @@ class App extends React.Component  {
         </TableHead>
 
         <TableBody>
-      {
-        customers.map(c => {
+      {this.state.customers ?
+        this.state.customers.map(c => {
           return (
             <Customer
               key={c.id} 
@@ -82,7 +77,7 @@ class App extends React.Component  {
               job={c.job}
               />  
           );
-        })
+        }) : "불러와야 하는데!!!"
       }
         </TableBody>
       </Table>
